@@ -16,8 +16,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 
-
-
 class ApiController extends AbstractFOSRestController
 {
     /**
@@ -27,12 +25,14 @@ class ApiController extends AbstractFOSRestController
     {
         $service = new InstagramService(new InstagramFactory(), new InstagramClient());
         $token = $request->get('access_token');
+        $errorMessage = '';
         if (isset($token)) {
             $photos = $service->getPhotos($token);
-            return View::create($photos, Response::HTTP_OK);
-        } else {
-//
-        }
+            if ($photos != false) {
+                return View::create($photos, Response::HTTP_OK);
+            } else $errorMessage = 'Something is wrong';
+        } else $errorMessage = 'Include access token';
+        return View::create($errorMessage, Response::HTTP_BAD_REQUEST);
     }
 
 
@@ -43,12 +43,14 @@ class ApiController extends AbstractFOSRestController
     {
         $service = new InstagramService(new InstagramFactory(), new InstagramClient());
         $token = $request->get('access_token');
+        $errorMessage = '';
         if (isset($token)) {
             $photo = $service->getOnePhoto($token, $photoId);
-            return View::create($photo, Response::HTTP_OK);
-        } else {
-
-        }
+            if ($photo != false) {
+                return View::create($photo, Response::HTTP_OK);
+            } else $errorMessage = 'Something is wrong';
+        } else $errorMessage = 'Include access token';
+        return View::create($errorMessage, Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -58,10 +60,13 @@ class ApiController extends AbstractFOSRestController
     {
         $service = new InstagramService(new InstagramFactory(), new InstagramClient());
         $token = $request->get('access_token');
+        $errorMessage = '';
         if (isset($token)) {
-            $photo = $service->getComments($token, $photoId);
-            return View::create($photo, Response::HTTP_OK);
-        }}
+            $comments = $service->getComments($token, $photoId);
+            return View::create($comments, Response::HTTP_OK);
+        } else $errorMessage = 'Include access token';
+        return View::create($errorMessage, Response::HTTP_BAD_REQUEST);
+    }
 
 
     /**
@@ -71,10 +76,14 @@ class ApiController extends AbstractFOSRestController
     {
         $service = new GooglePhotosService(new GooglePhotosClient(), new GooglePhotosFactory());
         $token = $request->get('access_token');
+        $errorMessage = '';
         if (isset($token)) {
             $albums = $service->getAlbums($token);
-            return View::create($albums, Response::HTTP_OK);
-        }
+            if ($albums != false) {
+                return View::create($albums, Response::HTTP_OK);
+            } else $errorMessage = 'Something is wrong';
+        } else $errorMessage = 'Include access token';
+        return View::create($errorMessage, Response::HTTP_BAD_REQUEST);
 
     }
 
@@ -84,11 +93,13 @@ class ApiController extends AbstractFOSRestController
     public function getGooglePhotosPhotosInAlbum(Request $request, $albumId): View
     {
         $service = new GooglePhotosService(new GooglePhotosClient(), new GooglePhotosFactory());
-        $token=$request->get('access_token');
+        $token = $request->get('access_token');
+        $errorMessage = '';
         if (isset($token)) {
-            $albums = $service->getPhotos($token, $albumId);
-            return View::create($albums, Response::HTTP_OK);
-        }
+            $photos = $service->getPhotos($token, $albumId);
+            return View::create($photos, Response::HTTP_OK);
+        } else $errorMessage = 'Include access token';
+        return View::create($errorMessage, Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -98,10 +109,14 @@ class ApiController extends AbstractFOSRestController
     {
         $service = new GooglePhotosService(new GooglePhotosClient(), new GooglePhotosFactory());
         $token = $request->get('access_token');
+        $errorMessage = '';
         if (isset($token)) {
-            $albums = $service->getOnePhoto($token, $photoId);
-            return View::create($albums, Response::HTTP_OK);
-        }
+            $photo = $service->getOnePhoto($token, $photoId);
+            if ($photo != false) {
+                return View::create($photo, Response::HTTP_OK);
+            } else $errorMessage = 'Something is wrong';
+        } else $errorMessage = 'Include access token';
+        return View::create($errorMessage, Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -111,10 +126,14 @@ class ApiController extends AbstractFOSRestController
     {
         $service = new GooglePhotosService(new GooglePhotosClient(), new GooglePhotosFactory());
         $token = $request->get('access_token');
+        $errorMessage = '';
         if (isset($token)) {
-            $albums = $service->getAllPhotos($token);
-            return View::create($albums, Response::HTTP_OK);
-        }
+            $photos = $service->getAllPhotos($token);
+            if ($photos != false) {
+                return View::create($photos, Response::HTTP_OK);
+            } else $errorMessage = 'Something is wrong';
+        } else $errorMessage = 'Include access token';
+        return View::create($errorMessage, Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -126,13 +145,19 @@ class ApiController extends AbstractFOSRestController
         $IG_service = new InstagramService(new InstagramFactory(), new InstagramClient());
         $igToken = $request->get('ig_access_token');
         $gpToken = $request->get('gp_access_token');
-        $GP_photos=[];
-        $IG_photos=[];
+        $GP_photos = [];
+        $IG_photos = [];
         if (isset($gpToken)) {
-            $GP_photos = $GP_service->getAllPhotos($gpToken);
+            $photos = $GP_service->getAllPhotos($gpToken);
+            if ($photos != false) {
+                return View::create($photos, Response::HTTP_OK);
+            } else $errorMessage = 'Something is wrong';
         }
         if (isset($igToken)) {
-            $IG_photos = $IG_service->getPhotos($igToken);
+            $photos = $IG_service->getPhotos($igToken);
+            if ($photos != false) {
+                return View::create($photos, Response::HTTP_OK);
+            } else $errorMessage = 'Something is wrong';
         }
 
         return View::create(array_merge($IG_photos, $GP_photos), Response::HTTP_OK);

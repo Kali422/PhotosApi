@@ -19,6 +19,7 @@
     "ext-json": "*"
   },
   "require-dev": {
+    "symfony/phpunit-bridge": "^4.3",
     "symfony/web-server-bundle": "4.3.*"
   },
   "config": {

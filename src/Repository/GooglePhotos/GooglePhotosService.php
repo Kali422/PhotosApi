@@ -27,16 +27,16 @@ class GooglePhotosService
     function getAlbums($access_token)
     {
         $albumsJson = $this->client->getAlbums($access_token);
-        if (isset($albumsJson->albums)) {
+        if ($albumsJson != []){
             return $this->factory->createAlbums($albumsJson->albums);
         }
-        else return [];
+        else return false;
     }
 
     function getPhotos($access_token,$albumId)
     {
         $photosJson = $this->client->getPhotosFromAlbum($access_token,$albumId);
-        if (isset($photosJson)) {
+        if ($photosJson!=[]) {
             return $this->factory->createArrayOfPhotos($photosJson);
         }
         else return [];
@@ -46,19 +46,19 @@ class GooglePhotosService
     function getAllPhotos($access_token)
     {
         $photosJson = $this->client->getAllPhotos($access_token);
-        if (isset($photosJson)) {
+        if ($photosJson!=[]) {
             return $this->factory->createArrayOfPhotos($photosJson);
         }
-        else return [];
+        else return false;
     }
 
     function getOnePhoto($access_token, $mediaId)
     {
         $photoJson = $this->client->getOnePhoto($access_token, $mediaId);
-        if (isset($photoJson)) {
+        if ($photoJson!=[]) {
             return $this->factory->createPhoto($photoJson);
         }
-        else return [];
+        else return false;
     }
 
 }

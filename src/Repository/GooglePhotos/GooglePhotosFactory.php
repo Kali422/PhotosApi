@@ -40,8 +40,9 @@ class GooglePhotosFactory
         $height = $data->mediaMetadata->height;
         $created_time = $data->mediaMetadata->creationTime;
         $text = $data->filename;
+        $link = $data->productUrl;
 
-        return new Photo($id, $url, $width, $height, $created_time, $text);
+        return new Photo($id, $url, $width, $height, $created_time, $text, null, null, $link);
     }
 
     function createArrayOfPhotos($data)

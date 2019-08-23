@@ -27,22 +27,34 @@ class InstagramService
     function getPhotos($access_token)
     {
         $data = $this->client->getAllData($access_token);
-        $photos = $this->factory->createArrayOfPhotos($data);
-        return $photos;
+        if ($data != [])
+        {
+            $photos = $this->factory->createArrayOfPhotos($data);
+            return $photos;
+        }
+        else return false;
+
     }
 
     function getComments($access_token, $mediaId)
     {
         $commentsRaw = $this->client->getComments($access_token, $mediaId);
-        $comments = $this->factory->createArrayOfComments($commentsRaw->data);
-        return $comments;
+        if ($commentsRaw!=[])
+        {
+            $comments = $this->factory->createArrayOfComments($commentsRaw->data);
+            return $comments;
+        }
+        else return [];
     }
 
     function getOnePhoto($access_token, $mediaId)
     {
         $photoRaw = $this->client->getOnePhoto($access_token, $mediaId);
-        $photo = $this->factory->createPhotoInstance($photoRaw->data);
-        return $photo;
+        if ($photoRaw != []) {
+            $photo = $this->factory->createPhotoInstance($photoRaw->data);
+            return $photo;
+        }
+        else return false;
     }
 
 

@@ -25,7 +25,7 @@ class GooglePhotosClient
         try {
             return json_decode($this->httpClient->request("GET", $url)->getContent());
         } catch (ClientExceptionInterface | RedirectionExceptionInterface | ServerExceptionInterface | TransportExceptionInterface $e) {
-            return [];
+            return $e->getMessage();
         }
     }
 
@@ -45,7 +45,7 @@ class GooglePhotosClient
             }
             catch (ClientExceptionInterface | RedirectionExceptionInterface | ServerExceptionInterface | TransportExceptionInterface $e)
             {
-                $dataRaw='';
+                return $e->getMessage();
             }
             $data = json_decode($dataRaw);
             if (isset($data->mediaItems)) {
@@ -69,7 +69,7 @@ class GooglePhotosClient
             }
             catch (ClientExceptionInterface | RedirectionExceptionInterface | ServerExceptionInterface | TransportExceptionInterface $e)
             {
-                $dataRaw='';
+                return $e->getMessage();
             }
             $data = json_decode($dataRaw);
             if (isset($data->mediaItems)) {
@@ -89,7 +89,7 @@ class GooglePhotosClient
         try {
             return json_decode($this->httpClient->request("GET", $url)->getContent());
         } catch (ClientExceptionInterface | RedirectionExceptionInterface | ServerExceptionInterface | TransportExceptionInterface $e) {
-            return [];
+            return $e->getMessage();
         }
     }
 }

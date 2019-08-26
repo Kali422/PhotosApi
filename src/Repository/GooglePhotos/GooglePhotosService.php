@@ -27,38 +27,38 @@ class GooglePhotosService
     function getAlbums($access_token)
     {
         $albumsJson = $this->client->getAlbums($access_token);
-        if ($albumsJson != []){
+        if (isset($albumsJson->albums)){
             return $this->factory->createAlbums($albumsJson->albums);
         }
-        else return false;
+        else return $albumsJson;
     }
 
     function getPhotos($access_token,$albumId)
     {
         $photosJson = $this->client->getPhotosFromAlbum($access_token,$albumId);
-        if ($photosJson!=[]) {
+        if (is_array($photosJson)) {
             return $this->factory->createArrayOfPhotos($photosJson);
         }
-        else return [];
+        else return $photosJson;
 
     }
 
     function getAllPhotos($access_token)
     {
         $photosJson = $this->client->getAllPhotos($access_token);
-        if ($photosJson!=[]) {
+        if (is_array($photosJson)) {
             return $this->factory->createArrayOfPhotos($photosJson);
         }
-        else return false;
+        else return $photosJson;
     }
 
     function getOnePhoto($access_token, $mediaId)
     {
         $photoJson = $this->client->getOnePhoto($access_token, $mediaId);
-        if ($photoJson!=[]) {
+        if (isset($photoJson->id)) {
             return $this->factory->createPhoto($photoJson);
         }
-        else return false;
+        else return $photoJson;
     }
 
 }

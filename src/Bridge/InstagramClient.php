@@ -26,7 +26,7 @@ class InstagramClient
         try {
             return json_decode($this->httpClient->request("GET", $url)->getContent());
         } catch (ClientExceptionInterface | RedirectionExceptionInterface | ServerExceptionInterface | TransportExceptionInterface $e) {
-            return [];
+            return $e->getMessage();
         }
     }
 
@@ -36,7 +36,7 @@ class InstagramClient
         try {
             return json_decode($this->httpClient->request("GET", $url)->getContent());
         } catch (ClientExceptionInterface | RedirectionExceptionInterface | ServerExceptionInterface | TransportExceptionInterface $e) {
-            return [];
+            return $e->getMessage();
         }
     }
 
@@ -46,7 +46,7 @@ class InstagramClient
         try {
             return json_decode($this->httpClient->request("GET", $url)->getContent());
         } catch (ClientExceptionInterface | RedirectionExceptionInterface | ServerExceptionInterface | TransportExceptionInterface $e) {
-            return [];
+            return $e->getMessage();
         }
     }
 
